@@ -14,14 +14,14 @@ data.forEach(function (item: string){
   all_categories.push({
     label: item,
     // icon: 'i-heroicons-home',
-    to: '/getting-started/installation'
+    to: '/category/'+item
   })
 })
 
 
 
 onMounted(() => {
-  showMenuItem(window.innerWidth)
+  showMenuItem(window.innerWidth - 20)
   window.onresize =function (){
     const width = window.innerWidth;
     showMenuItem(width)
@@ -54,7 +54,7 @@ function showMenuItem(width: number){
   }
   //more then 2xl
   if (width > 1536){
-
+    categories.value = all_categories.slice(0,12)
   }
 }
 
