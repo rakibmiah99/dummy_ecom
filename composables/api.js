@@ -1,29 +1,14 @@
-export const api = (endpoint) => {
+export const getData = async (endpoint, options = {}) => {
     try {
-        const url = 'https://dummyjson.com/products'+endpoint;
-        const data = $fetch(url, {
+        return await $fetch('https://dummyjson.com'+endpoint, options ?? {
             method: 'GET'
         })
-        console.log(data)
-        console.log('endpoint',url)
     }
     catch (error){
-        console.log(error)
-    }
-    /*throw createError({
-        statusCode: 400,
-        statusMessage: 'Hello Error'
-    })*/
-}
-
-export const useCounter = () => {
-    const counter = useState('counter', () => 0);
-    const setCounter = (new_value) => {
-        counter.value++;
+        throw createError({
+            statusCode: error.response.status,
+            statusMessage: error.response._data.message
+        })
     }
 
-    return {
-        counter,
-        setCounter
-    }
 }

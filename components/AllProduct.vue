@@ -1,10 +1,28 @@
 
 <script setup lang="ts">
-    var products = reactive([]);
-    const get_products = await $fetch('https://dummyjson.com/products', {
-      method: "GET"
-    })
-    products = get_products.products;
+    import {useStore} from "~/composables/store";
+    const limit = ref(15);
+    const skip = ref(0);
+    const {products} = useStore();
+    const loading = useState('loading', () => false);
+    const data = await getData(`/products?limit=${limit.value}&skip=${skip.value}`);
+    products.value = data.products;
+
+
+    //events
+    const loadMore = async (e) => {
+      skip.value = skip.value+20;
+      loading.value = true;
+      const data = await getData(`/products?limit=${limit.value}&skip=${skip.value}`);
+      loading.value = false;
+      if (data.products.length > 0){
+        products.value.push(...data.products)
+      }
+      else{
+        e.target.style.display = 'none'
+      }
+
+    }
 </script>
 
 
@@ -27,6 +45,10 @@
             :color="product.category"
         />
 
+      </div>
+
+      <div class="p-3 mt-5 text-center">
+        <UButton color="indigo" :loading="loading" @click="loadMore">Load More</UButton>
       </div>
 
     </div>
