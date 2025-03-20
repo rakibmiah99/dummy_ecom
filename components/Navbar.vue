@@ -12,9 +12,9 @@ const data = await $fetch('https://dummyjson.com/products/categories', {
 
 data.forEach(function (item: string){
   all_categories.push({
-    label: item,
+    label: item.name,
     // icon: 'i-heroicons-home',
-    to: '/category/'+item
+    to: '/category/'+item.slug
   })
 })
 
